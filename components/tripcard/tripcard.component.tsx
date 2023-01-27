@@ -6,8 +6,8 @@ const tripCard = (tripCard: TripCardInterface) => {
   return (
     <Flex flexDirection={"column"} width={'100%'} borderColor={'#DEDCDC'} borderWidth={1} pt={3} borderRadius={4}>
       <Flex flexDirection={"row"} justifyContent={"space-between"} px={3} pb={3}>
-        <Flex flexDirection={"row"} width={'35%'} justifyContent={'space-between'}>
-          <Box>Logo</Box>
+        <Flex flexDirection={"row"} justifyContent={'space-between'}>
+          <Box mr={2}>{tripCard.logo}</Box>
           <Box fontWeight={'600'}>{tripCard.partner}</Box>
         </Flex>
         <Box color={"#31708E"} fontWeight={'600'}>{tripCard.slots} slots left</Box>

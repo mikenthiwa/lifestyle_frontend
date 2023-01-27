@@ -26,7 +26,7 @@ export default function Home({ upcomingTrips }: any) {
     <Container pt={2} fontSize={'sm'} maxW={['480px', '1100px']}>
       <HeaderComponent mb={10} />
       <SimpleGrid columns={[1, 2, 3]} spacing={10} px='30px'>
-        {Trips.map((TripDetails: any, index) => (
+        {upcomingTrips.map((TripDetails: any, index: number) => (
           <TripCard
             key={index}
             tripName={TripDetails.tripName}
@@ -39,6 +39,7 @@ export default function Home({ upcomingTrips }: any) {
             departureTime={TripDetails.departureTime}
             arrivalTime={TripDetails.arrivalTime}
             inclusive={TripDetails.inclusive}
+            logo={TripDetails.logo}
           />
         ))}
       </SimpleGrid>
