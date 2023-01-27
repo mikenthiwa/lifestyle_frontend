@@ -1,5 +1,6 @@
 export interface TripCardInterface {
   partner: string;
+  logo: string;
   tripName: string;
   price: number;
   slots: number;

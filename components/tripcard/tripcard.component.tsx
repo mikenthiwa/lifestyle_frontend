@@ -6,8 +6,8 @@ const tripCard = (tripCard: TripCardInterface) => {
   return (
     <Flex flexDirection={"column"} width={'100%'} borderColor={'#DEDCDC'} borderWidth={1} pt={3} borderRadius={4}>
       <Flex flexDirection={"row"} justifyContent={"space-between"} px={3} pb={3}>
-        <Flex flexDirection={"row"} width={'35%'} justifyContent={'space-between'}>
-          <Box>Logo</Box>
+        <Flex flexDirection={"row"} justifyContent={'space-between'}>
+          <Box mr={2}>{tripCard.logo}</Box>
           <Box fontWeight={'600'}>{tripCard.partner}</Box>
         </Flex>
         <Box color={"#31708E"} fontWeight={'600'}>{tripCard.slots} slots left</Box>
@@ -17,26 +17,26 @@ const tripCard = (tripCard: TripCardInterface) => {
           <Text  fontSize={'xl'}>{ tripCard.tripName }</Text>
         </Center>
         <Flex flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-          <Flex flexDirection={'column'}>
-            <Text>{ tripCard.departureArea }</Text>
-            <Text fontSize={'xl'} fontWeight={'600'}>{ tripCard.departureTime }</Text>
+          <Flex flexDirection={'column'} alignItems='center'>
+            <Text fontWeight={'semibold'}>{ tripCard.departureArea }</Text>
+            <Text fontSize={'xl'}>{ tripCard.departureTime }</Text>
           </Flex>
           <Flex width={'50%'}>
             <hr style={hrStyle}/>
           </Flex>
-          <Flex flexDirection={'column'}>
-            <Text>{ tripCard.arrivalArea }</Text>
-            <Text fontSize={'xl'} fontWeight={'600'}>{ tripCard.arrivalTime }</Text>
+          <Flex flexDirection={'column'} alignItems='center'>
+            <Text fontWeight={'semibold'}>{ tripCard.arrivalArea }</Text>
+            <Text fontSize={'xl'}>{ tripCard.arrivalTime }</Text>
           </Flex>
         </Flex>
-          <Center display={'flex'} flexDirection={'column'}>
+          <Center pb={5} display={'flex'} flexDirection={'column'}>
             <Text fontSize={'lg'} fontWeight={'600'}>Inclusives</Text>
             {tripCard.inclusive.map((inclusive: string, index) => <Box key={index}>{inclusive}</Box>)}
           </Center>
 
 
-        <Flex flexDirection={'row'} my={3} justifyContent={'space-between'}>
-          <Button bg={'#31708E'} fontSize={'sm'} colorScheme={'#31708E'} size='md'>Book Trip</Button>
+        <Flex flexDirection={'row'} my={3} justifyContent={'space-between'} alignItems='center'>
+          <Button fontWeight='normal' bg={'#31708E'} fontSize={'sm'} colorScheme={'#31708E'} size='md'>Book Trip</Button>
           <Flex flexDirection={'row'}>
             <Text fontWeight={'semibold'} mr={1}>Price:</Text>
             <Text>{tripCard.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} KES</Text>
