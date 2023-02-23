@@ -3,6 +3,7 @@ import {TripCardInterface} from "../components/tripcard/interface/tripcard.inter
 export const TripDetails: TripCardInterface = {
   partner: "Jochi Safari",
   tripName: 'Kijabe Hills',
+  logo: '123',
   price: 2000,
   slots: 40,
   departureDate: '2023-01-21T21:00:00.000Z',
