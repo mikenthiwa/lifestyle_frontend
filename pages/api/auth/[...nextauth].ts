@@ -1,55 +1,64 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google";
-import {session} from "next-auth/core/routes";
 import { SignIn } from "../../../services/auth/auth.service";
+import {NextApiRequest, NextApiResponse} from "next";
 
-interface User {
+
+
+interface Profile {
   id: string;
   email: string;
-  token: string;
+  name: string;
+  isAuthenticated: string;
+  token: {
+    refreshToken: string;
+  }
 }
-export default NextAuth({
-  providers: [
-    GoogleProvider({
-      name: 'Google',
-      clientId: `${process.env.NEXT_PUBLIC_GOOGLE_ID}`,
-      clientSecret: `${process.env.NEXT_PUBLIC_GOOGLE_SECRET}`,
-      profile: async(profile, token) => {
-        try {
-          const { data } = await SignIn(token.access_token);
-          console.log(data)
-        } catch (e) {
+type NextAuthOptionsCallback = (req: NextApiRequest, res: NextApiResponse) => NextAuthOptions;
 
+const nextAuthOptions: NextAuthOptionsCallback = (req, res) => {
+  return {
+    providers: [
+      GoogleProvider({
+        name: 'Google',
+        clientId: `${process.env.NEXT_PUBLIC_GOOGLE_ID}`,
+        clientSecret: `${process.env.NEXT_PUBLIC_GOOGLE_SECRET}`,
+        profile: async(profile, token): Promise<Profile> => {
+          const { data: { accessToken, refreshToken, isAuthenticated } } = await SignIn(token.access_token);
+          res.setHeader('Set-Cookie', [
+            accessToken,
+            refreshToken,
+          ])
+          return {id: profile.sub, email: profile.email, name: profile.name, isAuthenticated, token: { refreshToken}}
         }
-        return {id: profile.sub, email: profile.email, token: token.access_token}
-      }
-    })
-  ],
-  secret: process.env.NEXT_PUBLIC_JWT_SECRET,
-  callbacks: {
-    async signIn({user, account, profile, email, credentials}) {
-      console.log('sign In')
-      const isAllowedToSignIn = true
-      if (isAllowedToSignIn) {
-        return true
-      } else {
-        // Return false to display a default error message
-        return false
-        // Or you can return a URL to redirect to:
-        // return '/unauthorized'
-      }
+      })
+    ],
+    secret: process.env.NEXT_PUBLIC_JWT_SECRET,
+    pages: {
+      signIn: '/'
     },
-    async session({ session, token, user }) {
-      // console.log('session', session)
-      return session
-    },
-    async jwt({ token, account, profile }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token
-        token.id = profile.id
-      }
-      return token
+    callbacks: {
+      async signIn({user, account, profile, email, credentials}) {
+        return user.isAuthenticated;
+      },
+      async jwt({ token,user, account, profile }) {
+        // Persist the OAuth access_token and or the user id to the token right after signin
+        if(user) {
+          token.name = user.name;
+          token.refreshToken = user.token.refreshToken;
+          return token;
+        } else {
+          return token
+        }
+      },
+
+      async session({ session, token, user }) {
+        return session
+      },
     }
   }
-})
+}
+
+export default (req: NextApiRequest, res: NextApiResponse) => {
+  return NextAuth(req, res, nextAuthOptions(req, res))
+}
