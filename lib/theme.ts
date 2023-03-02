@@ -5,7 +5,7 @@ const theme = extendTheme({
     body: `'Open Sans', sans-serif`
   },
   colors:{
-    primary: '#31708E',
+    primary: '#5680E9',
     secondary: '#F7F9FB'
   },
   fontSizes: {
