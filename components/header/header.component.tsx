@@ -4,7 +4,6 @@ import { FcGoogle } from 'react-icons/fc';
 import { useSession, signIn, signOut } from "next-auth/react"
 
 
-
 const HeaderComponent = ({mb}: { mb: any }) => {
   const { data: session, status } = useSession();
   const LoginButton = () => {
@@ -32,7 +31,7 @@ const HeaderComponent = ({mb}: { mb: any }) => {
       borderRadius={10}
     >
       <Heading as='h4' size='md' color='#31708e'>Moya</Heading>
-      {session  ? <Avatar size='sm' /> : <LoginButton />}
+      {session  ? <Avatar size='sm' name={session.user ? session.user.name : '' } /> : <LoginButton />}
     </Flex>
   )
 }
